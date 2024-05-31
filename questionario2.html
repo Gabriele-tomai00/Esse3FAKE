@@ -590,6 +590,49 @@
 </body>
 
 <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var submitButton = document.getElementById('quest_sbmSuccessivo');
+
+            submitButton.addEventListener('click', function(event) {
+                // Impedisci l'azione predefinita di submit del form
+                event.preventDefault();
+
+                var student1Name = document.getElementById('student1_name').value.trim();
+                var student1Surname = document.getElementById('student1_surname').value.trim();
+                var student2Name = document.getElementById('student2_name').value.trim();
+                var student2Surname = document.getElementById('student2_surname').value.trim();
+                var student3Name = document.getElementById('student3_name').value.trim();
+                var student3Surname = document.getElementById('student3_surname').value.trim();
+
+                var student1Email = `${student1Name}.${student1Surname}@studenti.units.it`;
+                var student2Email = `${student2Name}.${student2Surname}@studenti.units.it`;
+                var student3Email = `${student3Name}.${student3Surname}@studenti.units.it`;
+
+                // Crea un oggetto JSON con i dati degli studenti
+                var studentsData = [
+                    {
+                        name: student1Name,
+                        surname: student1Surname,
+                        email: `${student1Name}.${student1Surname}@studenti.units.it`
+                    },
+                    {
+                        name: student2Name,
+                        surname: student2Surname,
+                        email: `${student2Name}.${student2Surname}@studenti.units.it`
+                    },
+                    {
+                        name: student3Name,
+                        surname: student3Surname,
+                        email: `${student3Name}.${student3Surname}@studenti.units.it`
+                    }
+                ];
+                localStorage.setItem('studentsData', JSON.stringify(studentsData));
+
+            });
+        });
+
+
+
     document.addEventListener('DOMContentLoaded', function() {
         // Seleziona il link con la classe `js-masthead-menubutton`
         var hamburgerLink = document.querySelector('.js-masthead-menubutton');
@@ -599,7 +642,6 @@
             // Impedisci il comportamento predefinito del link
             event.preventDefault();
 
-            // Mostra l'alert con il messaggio
             alert('Terminare il questionario prima di cambiare pagina');
         });
     });
