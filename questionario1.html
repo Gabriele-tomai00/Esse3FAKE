@@ -445,7 +445,7 @@
                                                     <div class="col-sm-12">
                                                         <div class="selection-list-noborder questSpecVal">
                                                             <fieldset>
-                                                                <legend class="no-title">Inserire nome e cognome degli studenti con cui si intende svolgere il lavoro di gruppo (gli studenti sono 3)</legend>
+                                                                <legend class="no-title">Inserire il nome del progetto:</legend>
                                                                 
                                                                 <div class="form-element-wrapper">
                                                                     <label for="student1_name">Nome del Progetto:</label>
@@ -569,15 +569,11 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Seleziona il link con la classe `js-masthead-menubutton`
         var hamburgerLink = document.querySelector('.js-masthead-menubutton');
 
-        // Aggiungi un gestore di eventi `click`
         hamburgerLink.addEventListener('click', function(event) {
-            // Impedisci il comportamento predefinito del link
             event.preventDefault();
 
-            // Mostra l'alert con il messaggio
             alert('Terminare il questionario prima di cambiare pagina');
         });
     });
