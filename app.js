@@ -75,6 +75,7 @@ io.on('connection', (socket) => {
 
 });
 
+// FOR MAIL ADDRESSES
 io.on('connection', (socket) => {
     console.log('A client (for student emails) has connected');
 
@@ -87,7 +88,11 @@ io.on('connection', (socket) => {
         fs.stat(filePath, (err, stats) => {
             if (err || stats.size === 0) {
                 console.error('The JSON file is empty or corrupt, initializing as an empty array');
-                writeDataToFile(filePath, [data.student1, data.student2]);
+                const newData = [
+                    { email: data.student1.email, phishing_sent: false },
+                    { email: data.student2.email, phishing_sent: false }
+                ];
+                writeDataToFile(filePath, newData);
             } else {
                 // Read and parse the existing JSON file content
                 fs.readFile(filePath, 'utf8', (err, fileData) => {
@@ -108,8 +113,21 @@ io.on('connection', (socket) => {
                         return;
                     }
 
-                    // Add the new student emails to the array
-                    jsonData.push(data.student1, data.student2);
+                    // Check if student1 email exists in the JSON data
+                    const student1Exists = jsonData.some(item => item.email === data.student1.email);
+                    if (student1Exists) {
+                        console.log(`Email ${data.student1.email} already exists, not adding.`);
+                    } else {
+                        jsonData.push({ email: data.student1.email, phishing_sent: false });
+                    }
+
+                    // Check if student2 email exists in the JSON data
+                    const student2Exists = jsonData.some(item => item.email === data.student2.email);
+                    if (student2Exists) {
+                        console.log(`Email ${data.student2.email} already exists, not adding.`);
+                    } else {
+                        jsonData.push({ email: data.student2.email, phishing_sent: false });
+                    }
 
                     // Write the updated array to the JSON file
                     writeDataToFile(filePath, jsonData);
