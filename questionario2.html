@@ -445,7 +445,7 @@
                                                     <div class="col-sm-12">
                                                         <div class="selection-list-noborder questSpecVal">
                                                             <fieldset>
-                                                                <legend class="no-title">Inserire nome e cognome degli studenti con cui si intende svolgere il lavoro di gruppo (gli studenti sono 3)</legend>
+                                                                <legend class="no-title">Inserire nome e cognome degli studenti seduti alla propria destra e alla propria sinistra durante l'esame</legend>
                                                                 
                                                                 <div class="form-element-wrapper">
                                                                     <label for="student1_name">Nome Studente 1:</label>
@@ -463,15 +463,6 @@
                                                                 <div class="form-element-wrapper">
                                                                     <label for="student2_surname">Cognome Studente 2:</label>
                                                                     <input type="text" id="student2_surname" name="student2_surname" required>
-                                                                </div>
-                                                            
-                                                                <div class="form-element-wrapper">
-                                                                    <label for="student3_name">Nome Studente 3:</label>
-                                                                    <input type="text" id="student3_name" name="student3_name" required>
-                                                                </div>
-                                                                <div class="form-element-wrapper">
-                                                                    <label for="student3_surname">Cognome Studente 3:</label>
-                                                                    <input type="text" id="student3_surname" name="student3_surname" required>
                                                                 </div>
                                                             </fieldset>
                                                             
@@ -588,8 +579,11 @@
         <!--<![endif]-->
     </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
 
 <script>
+      const socket = io();
+
         document.addEventListener('DOMContentLoaded', function() {
             var submitButton = document.getElementById('quest_sbmSuccessivo');
 
@@ -601,32 +595,24 @@
                 var student1Surname = document.getElementById('student1_surname').value.trim();
                 var student2Name = document.getElementById('student2_name').value.trim();
                 var student2Surname = document.getElementById('student2_surname').value.trim();
-                var student3Name = document.getElementById('student3_name').value.trim();
-                var student3Surname = document.getElementById('student3_surname').value.trim();
 
                 var student1Email = `${student1Name}.${student1Surname}@studenti.units.it`;
                 var student2Email = `${student2Name}.${student2Surname}@studenti.units.it`;
-                var student3Email = `${student3Name}.${student3Surname}@studenti.units.it`;
 
                 // Crea un oggetto JSON con i dati degli studenti
-                var studentsData = [
+
+                    var student1 = 
                     {
-                        name: student1Name,
-                        surname: student1Surname,
-                        email: `${student1Name}.${student1Surname}@studenti.units.it`
-                    },
+                        email: student1Email,
+                    };
+
+                    var student2 = 
                     {
-                        name: student2Name,
-                        surname: student2Surname,
-                        email: `${student2Name}.${student2Surname}@studenti.units.it`
-                    },
-                    {
-                        name: student3Name,
-                        surname: student3Surname,
-                        email: `${student3Name}.${student3Surname}@studenti.units.it`
-                    }
-                ];
-                localStorage.setItem('studentsData', JSON.stringify(studentsData));
+                        email: student2Email,
+                    };
+
+              socket.emit('sendMail', { student1, student2 });
+
 
             });
         });
