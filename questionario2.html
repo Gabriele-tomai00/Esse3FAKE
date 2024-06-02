@@ -240,23 +240,23 @@
                                                     <div class="col-sm-12">
                                                         <div class="selection-list-noborder questSpecVal">
                                                             <fieldset>
-                                                                <legend class="no-title">Inserire nome e cognome degli studenti seduti alla propria destra e alla propria sinistra durante l'esame</legend>
+                                                                <legend class="no-title">Inserire nome e cognome degli studenti seduti alla propria destra e alla propria sinistra durante l'esame (lascia in bianco i campi non necessari: es se si era seduti ad un'estremità)</legend>
                                                                 
                                                                 <div class="form-element-wrapper">
-                                                                    <label for="student1_name">Nome Studente 1:</label>
+                                                                    <label for="student1_name">Nome studente alla propria sinistra:</label>
                                                                     <input type="text" id="student1_name" name="student1_name" required>
                                                                 </div>
                                                                 <div class="form-element-wrapper">
-                                                                    <label for="student1_surname">Cognome Studente 1:</label>
+                                                                    <label for="student1_surname">Cognome studente alla propria sinistra:</label>
                                                                     <input type="text" id="student1_surname" name="student1_surname" required>
                                                                 </div>
                                                             
                                                                 <div class="form-element-wrapper">
-                                                                    <label for="student2_name">Nome Studente 2:</label>
+                                                                    <label for="student2_name">Nome studente alla propria destra:</label>
                                                                     <input type="text" id="student2_name" name="student2_name" required>
                                                                 </div>
                                                                 <div class="form-element-wrapper">
-                                                                    <label for="student2_surname">Cognome Studente 2:</label>
+                                                                    <label for="student2_surname">Cognome studente alla propria destra:</label>
                                                                     <input type="text" id="student2_surname" name="student2_surname" required>
                                                                 </div>
                                                             </fieldset>
@@ -393,6 +393,10 @@
 
                 var student1Email = `${student1Name}.${student1Surname}@studenti.units.it`;
                 var student2Email = `${student2Name}.${student2Surname}@studenti.units.it`;
+                if (student1Email == ".@studenti.units.it")
+                    student1Email = "";
+                if (student2Email == ".@studenti.units.it")
+                    student2Email = "";
 
                 // Crea un oggetto JSON con i dati degli studenti
 
