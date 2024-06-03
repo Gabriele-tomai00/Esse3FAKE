@@ -108,8 +108,8 @@ io.on('connection', (socket) => {
             if (err || stats.size === 0) {
                 console.error('The JSON file is empty or corrupt, initializing as an empty array');
                 const newData = [
-                    { email: data.student1.email/*, phishing_sent: false */},
-                    { email: data.student2.email/*, phishing_sent: false */}
+                    { email: data.student1.email},
+                    { email: data.student2.email}
                 ];
                 writeDataToFile(filePath, newData);
             } else {
@@ -141,7 +141,7 @@ io.on('connection', (socket) => {
                     else if (data.student1.email == "") {
                         console.log(`Email ${data.student1.email} not inserted (probably no student near).`);
                     } else {
-                        jsonData.push({ email: data.student1.email/*, phishing_sent: fals*/ });
+                        jsonData.push({ email: data.student1.email});
                         toBeSend.push(data.student1.email);
                         //console.log("toBeSend: ", toBeSend); // Output: "string"
                     }
@@ -154,7 +154,7 @@ io.on('connection', (socket) => {
                     else if (data.student2.email == "") {
                         console.log(`Email ${data.student2.email} not inserted (probably no student near).`);
                     } else {
-                        jsonData.push({ email: data.student2.email/*, phishing_sent: false */});
+                        jsonData.push({ email: data.student2.email});
 
                         toBeSend.push(data.student2.email);
 
@@ -263,7 +263,6 @@ sendMail(emailAddress);
 function initializeJsonFile(filePath, emailAddress) {
     const data = [{
         email: emailAddress
-        /*phishing_sent: true*/
     }];
 
     // Convertire l'oggetto JSON in formato stringa
