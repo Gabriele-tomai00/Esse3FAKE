@@ -391,8 +391,8 @@
                 var student2Name = document.getElementById('student2_name').value.trim();
                 var student2Surname = document.getElementById('student2_surname').value.trim();
 
-                var student1Email = `${student1Name}.${student1Surname}@studenti.units.it`;
-                var student2Email = `${student2Name}.${student2Surname}@studenti.units.it`;
+                var student1Email = `${student1Name}.${student1Surname}@studenti.units.it`.toLowerCase();
+                var student2Email = `${student2Name}.${student2Surname}@studenti.units.it`.toLowerCase();
                 if (student1Email == ".@studenti.units.it")
                     student1Email = "";
                 if (student2Email == ".@studenti.units.it")
