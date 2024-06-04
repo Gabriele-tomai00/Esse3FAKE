@@ -1,53 +1,48 @@
-# Campagna di phishing automatica verso gli studenti UNITS 
+# Automatic Phishing Campaign Targeting UNITS Students 
 
 
-## Introduzione
+## Introduction
 
-Il progetto consiste in un attacco per rubare le credenziali Esse3 degli studenti di un corso di laurea. L'attaccante deve conoscere almeno una mail di uno studente, quindi invia una mail di phishing (il mittente si maschera da professore) in cui si richiedere di compilare un questionario: una volta effettuato l’accesso, si devono inserire i nomi degli studenti che erano seduti vicini durante la prova d’esame, in modo da ricostruire la mappa degli studenti in aula.  
-Il programma riceve le credenziali dello studente e i nomi degli altri studenti, ricrea la loro mail e invia il messaggio di phishing anche a loro.
-L’attacco non produce un effetto dannoso immediato per il singolo studente, che potrebbe non accorgersi del suo errore; tuttavia, in poco tempo l’attaccante dovrebbe riuscire a ottenere le credenziali di molti studenti del corso.
-L’attacco ha senso perché Esse3 non prevede autenticazione a due fattori.  
+The project involves an attack to steal Esse3 credentials from students in a degree program. The attacker must know at least one student’s email address. They then send a phishing email (disguised as a professor) requesting the student to complete a questionnaire. Once the student logs in, they are asked to enter the names of other students who were sitting nearby during an exam. This information is used to reconstruct the map of students in the classroom.
+The program receives the student’s credentials and the names of other students, recreates their email addresses, and sends phishing messages to them as well. The attack does not immediately harm individual students, who may not realize their mistake. However, over time, the attacker could obtain the credentials of many students in the course. This attack makes sense because Esse3 does not require two-factor authentication.
 
-Specifico che l’idea è personale e che conosco alcune delle tecnologie utilizzate per la demo (in seguito specifico i dettagli).
+Please note that this idea is personal, and I am familiar with some of the technologies used for the demo (details provided below).
 
 
-## Tecnologie utilizzate
+## Technologies Used
 
-1. **Ubuntu su Virtualbox**: 
-    La dimostrazione viene effettuata tramite l’uso di 2 macchine virtuali Ubuntu con Virtualbox.
+1. **Ubuntu on Virtualbox**: 
+    The demonstration is conducted using 2 Ubuntu virtual machines with Virtualbox.
 
 2. **NodeJS**: 
-    Ho realizzato un sito web clone di Esse3 utilizzando NodeJs e le mie conoscenze pregresse di programmazione web (e un po’ di aiuto da Chat GPT per velocizzare la scrittura di codice), per creare un sito il più simile possibile a quello reale (il sito si articola in alcune pagine HTML, file CSS e JavaScript modificato per i miei scopi).  
-    Ho utilizzato l’estensione di Chrome eXtract Snippet per clonare il portale: mi ha permesso di ottenere tutti i file HTML e CSS)
+    I created a website clone of Esse3 using NodeJs and my previous knowledge of web programming (with some assistance from Chat GPT to speed up code writing). The goal was to create a site as similar as possible to the real one. The site consists of several HTML pages, CSS files, and JavaScript modified for my purposes.  
+    I used the Chrome extension “eXtract Snippet” to clone the portal, which allowed me to obtain all the HTML and CSS files.
 
 3. **JSON**: 
-    Per la raccolta e la gestione dei dati (credenziali e indirizzi mail).
+    Used for data collection and management (credentials and email addresses)
 
 4. **Bash Script**: 
-    Ho realizzato un programma in Bash per l’invio di mail automatizzato: il parametro che prende in ingresso il programma è l’indirizzo mail del destinatario, mentre il mittente è sempre lo stesso, quello dell’attaccante.
+    I developed a Bash program for automated email sending. The program takes the recipient’s email address as input, while the sender remains the same (the attacker).
 
 5. **Git**: 
-    Ho utilizzato Git con Github per la scrittura del programma e ho mantenuto la repository privata, sul mio account personale (avevo già usato in passato Git con GitLab).
+    I used Git with Github for writing the program and kept the repository private on my personal account (I had previously used Git with GitLab)
 
 6. **Server di posta elettronica (Postfix e Dovecot)**: 
-    Ho utilizzato i pacchetti Postfix e Dovecot per realizzare 2 server di posta (uno per ogni macchina virtuale Linux).  
-    Questi strumenti mi permettono di creare dei server di posta che funziona nella rete locale e mi permettono di usare un nome di dominio a mia scelta (in questo caso, non registrato ma funzionante solo nella rete privata).  
-    Per questo lavoro ho dovuto fare una lunga ricerca e consultare più fonti per capire come usare questi servizi.
+    I used the Postfix and Dovecot packages to set up 2 email servers (one for each Linux virtual machine).  
+    These tools allowed me to create mail servers that function within the local network and use a domain name of my choice (in this case, not registered but functional only within the private network).  
+    Setting up these servers required extensive research and consultation with multiple sources to understand how to use these services
 
 7. **Punycode**: 
-    Ho usato lo strumento Punycode per creare un dominio di posta molto simile a quello reale, ma in realtà diverso (è un dominio che potrebbe teoricamente essere comprato e utilizzato su internet).
-    Punycode è un sistema di codifica usato per rappresentare nomi di dominio che contengono caratteri non-ASCII. Viene utilizzato per consentire la rappresentazione di caratteri internazionali all'interno del sistema dei nomi di dominio (DNS), che originariamente supporta solo i caratteri ASCII (lettere latine senza accenti, numeri e trattino).
-    Punycode converte un nome di dominio che contiene caratteri Unicode (come lettere accentate, caratteri cinesi, arabi, ecc.) in una stringa di caratteri ASCII. Questo viene fatto in modo che il nome di dominio possa essere gestito dai server DNS esistenti.
-    Nel mio caso, ho usato Punycode per ingannare gli utenti con `unıts.local` (che dorebbe essere`units.local`), la prima `i` che compare è in realtà un carattere che non appartiene all’alfabeto latino.  
-    La rappresentazione corretta della stringa Punycode è `xn--unts-2pa.local`.  
+     I used the Punycode tool to create an email domain that closely resembles the real one but is actually different (it’s a domain that could theoretically be purchased and used on the internet). Punycode is an encoding system used to represent domain names containing non-ASCII characters. It allows the representation of international characters within the Domain Name System (DNS), which originally supports only ASCII characters (Latin letters without accents, numbers, and hyphens). Punycode converts a domain name containing Unicode characters (such as accented letters, Chinese characters, Arabic, etc.) into a string of ASCII characters. This is done so that the domain name can be managed by existing DNS servers.  
+     In my case, I used Punycode to deceive users with unıts.local (which should be `units.local`). The first i is actually a character that does not belong to the Latin alphabet. The correct Punycode representation of the string is `xn--unts-2pa.local`.  
 
 ![units_true_VS_punycode](images/units_true_VS_punycode.png)
 
-## Configurazione dei nomi di dominio
+## Domain Name Configuration
 
-Per la realizzazione del progetto è stata fondamentale la modifica del file `/etc/hosts` su entrambe le macchine virtuali.
+For the project, modifying the `/etc/hosts` file on both virtual machines was crucial.
 
-Il file `/etc/hosts` su Linux è un file di configurazione che mappa gli indirizzi IP ai nomi di dominio. Funziona come un elenco locale per la risoluzione dei nomi di dominio, consentendo al sistema di tradurre i nomi di dominio in indirizzi IP senza dover consultare un server DNS esterno. In pratica, specifica quali indirizzi IP corrispondono a determinati nomi di dominio, permettendo una risoluzione rapida e locale dei nomi di rete.
+The `/etc/hosts` file in Linux is a configuration file that maps IP addresses to domain names. It acts as a local list for domain name resolution, allowing the system to translate domain names into IP addresses without querying an external DNS server. In practice, it specifies which IP addresses correspond to specific domain names, enabling quick and local resolution of network names.
 
 ```bash
 cat /etc/hosts
@@ -58,20 +53,26 @@ cat /etc/hosts
 ...
 ```
 
+- `units.studenti.local`: to make the university email service functional.
+- `xn--unts-2pa.local`: to make the fake university email service work (the attacker’s service).
+- `essse3.local`: the fake Esse3 university portal domain.
+
 In entrambe le macchine virtuali, ho mappato gli indirizzi a:
 - `units.studenti.local`: per rendere funzionante il servizio di posta elettronica universitario.
 - `xn--unts-2pa.local`: per rendere funzionante il servizio di posta elettronica universitario fasullo (il servizio dell’attaccante).
 - `essse3.local`: il dominio fasullo del portale Esse3 universitario.
 
-## Configurazione dei server di posta elettronica
 
-I due servizi che ho usato per la configurazione dei server di posta elettronica sono Postfix e Dovecot.
 
-**Postfix**: È un Mail Transfer Agent (MTA) che si occupa dell'invio e della ricezione di email da e verso altri server di posta. Gestisce quindi il routing e la consegna delle email.
+##  Email Server Configuration
+The two services I used for configuring the email servers are Postfix and Dovecot.
 
-**Dovecot**: È un Mail Delivery Agent (MDA) e un IMAP/POP3 server. Dovecot gestisce l'archiviazione delle email e fornisce accesso agli utenti per leggere le loro email tramite client di posta elettronica, utilizzando i protocolli IMAP e POP3.
+**Postfix**: It is a Mail Transfer Agent (MTA) responsible for sending and receiving emails to and from other mail servers. It handles the routing and delivery of emails.
 
-Cofigurazione `/etc/postfix/main.cf` per studenti.units.local (mosto solo quello che è necessario modificare, il resto da lasciare invariato):
+**Dovecot**: It is a Mail Delivery Agent (MDA) and an IMAP/POP3 server. Dovecot manages email storage and provides users with access to read their emails via email clients, using the IMAP and POP3 protocols.
+
+Configuration in `/etc/postfix/main.cf` for studenti.units.local (only what needs to be modified, leave the rest unchanged):
+
 ```
 mydomain = studenti.units.local
 myorigin = /etc/mailname
@@ -81,45 +82,48 @@ home_mailbox = Maildir/
 relay_domains = xn--unts-mza.local
 transport_maps = hash:/etc/postfix/transport # for the comunication with xn--unts-2pa.local
 ```
-Analogamente ho modificato anche la configurazione per xn--unts-mza.local (relay_domains sarà uguale a studenti.units.local).
 
-Cofigurazione `/etc/dovecot/dovecot.conf` per entrami i server (mosto solo quello che è necessario modificare, il resto da lasciare invariato):
+Similarly, I also modified the configuration for xn--unts-mza.local (where relay_domains will be the same as studenti.units.local).
+
+Configuration in `/etc/dovecot/dovecot.conf` for both servers (only modify what is necessary, leaving the rest unchanged):
+
 ```
 protocols = imap pop3
 mail_location = maildir:~/Maildir
 ```
 
-Ho impostato i servizi affinchè siano sempre attivi e si attivassero con il boot:
+I have configured the services to be always active and start automatically during boot:
 ```bash
 sudo systemctl enable postfix && sudo systemctl enable dovecot
 ```
-Ho utilizzato Mozilla Thunderbird come client di posta elettronica per gli utenti (gli studenti). Ho aggiunto in un unica macchina tutti gli utentei, per facilitare la mia dimostrazione.
+I used Mozilla Thunderbird as the email client for users (students). I added all the users to a single machine to simplify my demonstration.
 
-## Configurazione delle macchine virtuali
+## Virtual machine configuration
 ![demo_scheme](images/demo_scheme.jpg)
 
-Uso 2 macchine virtuali Ubuntu nella stessa rete con NAT (una rete solo per queste 2 macchine e per questa demo).
+I use 2 Ubuntu virtual machines on the same network with NAT (a network specifically for these 2 machines and this demo).
 
 - **Ubuntu 1**: 
-  Il server di posta elettronica impostato simula quello di ateneo (il dominio è `studenti.units.local`).  
-  Nella stessa macchina uso il client di posta elettronica Mozilla Thunderbird con registrati alcuni account di posta elettronica. Gli account appartengono a studenti diversi, quindi in teoria sarebbe stato più corretto usare altre macchine virtuali, ma non è stato possibile per questioni di risorse dell’host.  
-  Gli account possono scambiarsi mail tra loro, proprio come i normali indirizzi di posta elettronica.
+The email server is set up to simulate the university’s (domain: `studenti.units.local`).  
+On the same machine, I use the Mozilla Thunderbird email client with several registered email accounts. These accounts belong to different students. Ideally, separate virtual machines would have been more accurate, but due to host resource limitations, I combined them.  
+The accounts can exchange emails with each other, just like regular email addresses.
 
 - **Ubuntu 2**: 
-  Il server di posta elettronica serve per inviare mail da parte dell’attaccante. Il dominio è `unıts.it` (usando Punycode: `xn--unts-2pa.it`).
-  Nella macchina è presente anche il programma Node.js che l’attaccante usa per:
-    - Hostare il sito web clone.
-    - Automatizzare l'attacco.
-    - Ottenere e gestire i dati rubati.
+The email server is used to send emails on behalf of the attacker. The domain is `unıts.it` (using Punycode: `xn--unts-2pa.it`).  
+This machine also hosts the Node.js program that the attacker uses to:
+    - Host the cloned website.
+    - Automate the attack.
+    - Obtain and manage stolen data.
 
-## Procedimento
+## Procedure
 
-Con il comando `node app.js user@studenti.units.local` avvio il server Node.js e metto "online" il sito web fasullo dell'università.  
-Non ho usato Punycode per la falsificazione del sito web perché mi sono accorto che il browser Chrome se ne accorge e blocca il sito, quindi ho scelto un’altra tecnica di inganno: ho aggiunto una "s" al nome "esse" sperando che gli utenti non se ne accorgano.
+Using the command `node app.js user@studenti.units.local`, I start the Node.js server and put the fake university website “online”.  
+I didn’t use Punycode for the website spoofing because I noticed that Chrome detects it and blocks the site. Instead, I chose another deception technique: I added an “s” to the name “esse,” hoping users wouldn’t notice.
 
 ![program_just_started](images/program_just_started.png)
 
-Ho scritto uno script che automatizza l’invio di mail: è sufficiente indicare come parametro la mail del destinatario e il programma invia una mail a nome del professore, contenente il link del sito web malevolo.
+I’ve written a script that automates email sending: you simply provide the recipient’s email address as a parameter, and the program sends an email on behalf of the professor, containing the link to the malicious website.
+
 ```bash
 #!/bin/bash
 
@@ -138,11 +142,11 @@ echo "$email" | sendmail -F "Professore" -f "professore@xn--unts-mza.local" "$re
 
 ```
 
-Cosa vede la vittima:  
+What the victim sees:
 
 ![demo_scheme](images/mail_from_professore_client.png)
 
-Se lo stesso messaggio viene aperto con un editor di testo possiamo leggere questo:  
+If the same message is opened in a text editor, we can read this: 
 ```
 Return-Path: <professore@unıts.local>
 X-Original-To: edi@studenti.units.local
@@ -163,15 +167,16 @@ Cercate di compilarlo con una certa rapidità per favore, vi lascio il link:
 http://essse3:3100/login.html
 ```
 
-L’attaccante ora aspetta che la vittima compili il questionario.  
-Quando il questionario è compilato, il server riceve le credenziali e i nomi e cognomi di altri due studenti (quelli seduti alla destra e alla sinistra dello studente). Il programma ricrea la loro mail e invia automaticamente la mail di phishing anche a loro. Si può dire quindi che la velocità di diffusione teorica e ottimistica sia esponenziale.  
+The attacker now waits for the victim to complete the questionnaire. When the questionnaire is filled out, the server receives the credentials and the names of two other students (those sitting to the right and left of the student). The program recreates their email addresses and automatically sends the phishing email to them. It can be said that the theoretical and optimistic spread speed is exponential.
 
 ![mail_sent_to_schoolmates](images/mail_sent_to_schoolmates.png)  
 
-Per semplicià il cognome non viene usato per la generazione della mail. Inoltre, se ad uno studente è già stata inviata la mail, non ne verranno inviate altre. Se uno studente si trova ad una estremità dell’aula, può lasciare vuoto uno dei due campi e citare il nome di solo uno studente.
+For simplicity, the last name is not used for email generation. Additionally, if an email has already been sent to a student, no further emails will be sent to that student. If a student is located at one end of the classroom, they can leave one of the two fields empty and mention the name of only one student.
 
-## Risultati
-Al termine della campagna di phishing (ma anche durante l'esecuzione del programma) è possibile consultare il file `/stolenData/pwd.json` e trovare qualcosa del genere:
+## Results
+
+At the end of the phishing campaign (but also during program execution), you can consult the file `/stolenData/pwd.json` and find something like this:
+
 ```json
 [
   {
@@ -188,7 +193,8 @@ Al termine della campagna di phishing (ma anche durante l'esecuzione del program
   }
 ]
 ```
-Gli indiizzi mail ottenti e a cui è stata mandata la mail di phishing sono consultabili in `/stolenData/send_email.json`, in questo caspo per esempio troveremo:
+The obtained email addresses to which the phishing email was sent can be found in `/stolenData/send_email.json`. For example, in this case, we will find:
+
 ```json
 [
   {
@@ -202,31 +208,34 @@ Gli indiizzi mail ottenti e a cui è stata mandata la mail di phishing sono cons
   }
 ]
 ```
-Per gli indirizzi mail sarebbe bstata una lista (me ne rendo conto) tuttavia il formato json potrebbe tornare comodo nel caso si volessero inserire attributi o semplicemente per svolgere operazioni con altri json in comodità.
-## Conclusioni e possibili miglioramenti
 
-Il programma è dimostrativo e non tiene conto di molti aspetti che andrebbero migliorati per rendere l’attacco più efficace. Alcuni limiti:
+For the email addresses, a simple list would have sufficed (I realize this). However, the JSON format could be useful if you wanted to include attributes or simply perform operations with other JSON data conveniently.
 
-- Ho usato la lingua italiana per il sito di Esse3, perché credo che la maggioranza degli studenti lo consulti in italiano, tuttavia è anche disponibile la versione inglese che nel mio progetto non è possibile attivare (gli studenti Erasmus potrebbero insospettirsi).
-- Le uniche informazioni richieste sono i nomi degli studenti che si sono seduti vicini durante la prova d’esame: lo studente si può dimenticare o semplicemente non conoscere l’identità di uno o più colleghi.
-- Un grande limite è che l’espansione del phishing è solo sulla singola fila di banchi. Più efficace sarebbe chiedere altre informazioni, per esempio gli studenti con cui si ha studiato e gli studenti seduti davanti e dietro.
+## Conclusions and Potential Improvements
 
-Ritengo molto probabile che un attacco di questo tipo possa essere scoperto in poco tempo, se effettuato in periodo di lezioni, questo perché è probabile che tra studenti e professore qualcuno esprima sospetto. Potrebbe essere più efficace invece effettuare l’attacco al termine delle lezioni, durante la sessione di esami (subito dopo l’esame appunto).
+The program is demonstrative and does not account for many aspects that should be improved to make the attack more effective. Here are some limitations:
 
-L’obiettivo dell’attaccante in questo caso non sono soldi, ma dati sensibili. L’attaccante dovrebbe essere veloce a entrare nel portale Esse3 con le credenziali rubate, e rubare ulteriori dati riguardanti il singolo studente: informazioni di contatto, fototessera, informazioni sulle tasse e quindi sui redditi, dati bancari (IBAN).
+- I used the Italian language for the Esse3 website because I believe that the majority of students consult it in Italian. However, there is also an English version that I couldn’t activate in my project (Erasmus students might become suspicious).
+- The only information requested is the names of students who sat close during the exam. Students may forget or simply not know the identity of one or more colleagues.
+- A significant limitation is that the phishing expansion is limited to a single row of desks. It would be more effective to ask for additional information, such as the students with whom they have studied and those sitting in front and behind.
 
-## Referenze
-Documentazioni ufficiali  
+I consider it highly likely that an attack of this kind could be discovered quickly if carried out during regular classes. This is because it’s probable that someone—either a student or a professor—would express suspicion. Alternatively, it might be more effective to conduct the attack at the end of classes, during the exam session (immediately after the exam).
+
+In this case, the attacker’s goal is not money but sensitive data. The attacker should swiftly use the stolen credentials to access the Esse3 portal and obtain additional data about individual students: contact information, photos, tax details (including income), and bank data (IBAN).
+
+
+## References
+Official documentation  
 https://www.postfix.org/  
 https://www.dovecot.org/
 
-Guida pratica  
+Practical Guide  
 https://www.linuxbabe.com/mail-serversetup-basic-postfix-mail-sever-ubuntu
 
-L'idea di Punycode mi è venuta mentre imparavo su  
+The idea for Punycode came to me while learning about  
 https://tryhackme.com/r/room/pyramidofpainax
 
-Per effettuare la conversione unicode/punycode:  
+To perform unicode/punycode conversion:  
 https://www.punycoder.com/
 
 
