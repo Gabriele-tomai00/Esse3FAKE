@@ -3,7 +3,7 @@
 
 ## Introduction
 
-The project involves an attack to steal Esse3 credentials from students in a degree program. The attacker must know at least one student’s email address. They then send a phishing email (disguised as a professor) requesting the student to complete a questionnaire. Once the student logs in, they are asked to enter the names of other students who were sitting nearby during an exam. This information is used to reconstruct the map of students in the classroom.
+The project involves an attack to steal Esse3 credentials from students. The attacker must know at least one student’s email address. It sends a phishing email (disguised as a professor) requesting the student to complete a questionnaire. Once the student logs in, they are asked to enter the names of other students who were sitting nearby during an exam. This information is used to reconstruct the map of students in the classroom.  
 The program receives the student’s credentials and the names of other students, recreates their email addresses, and sends phishing messages to them as well. The attack does not immediately harm individual students, who may not realize their mistake. However, over time, the attacker could obtain the credentials of many students in the course. This attack makes sense because Esse3 does not require two-factor authentication.
 
 Please note that this idea is personal, and I am familiar with some of the technologies used for the demo (details provided below).
@@ -27,14 +27,14 @@ Please note that this idea is personal, and I am familiar with some of the techn
 5. **Git**: 
     I used Git with Github for writing the program and kept the repository private on my personal account (I had previously used Git with GitLab)
 
-6. **Server di posta elettronica (Postfix e Dovecot)**: 
+6. **Mail server (Postfix e Dovecot)**: 
     I used the Postfix and Dovecot packages to set up 2 email servers (one for each Linux virtual machine).  
     These tools allowed me to create mail servers that function within the local network and use a domain name of my choice (in this case, not registered but functional only within the private network).  
     Setting up these servers required extensive research and consultation with multiple sources to understand how to use these services
 
 7. **Punycode**: 
      I used the Punycode tool to create an email domain that closely resembles the real one but is actually different (it’s a domain that could theoretically be purchased and used on the internet). Punycode is an encoding system used to represent domain names containing non-ASCII characters. It allows the representation of international characters within the Domain Name System (DNS), which originally supports only ASCII characters (Latin letters without accents, numbers, and hyphens). Punycode converts a domain name containing Unicode characters (such as accented letters, Chinese characters, Arabic, etc.) into a string of ASCII characters. This is done so that the domain name can be managed by existing DNS servers.  
-     In my case, I used Punycode to deceive users with unıts.local (which should be `units.local`). The first i is actually a character that does not belong to the Latin alphabet. The correct Punycode representation of the string is `xn--unts-2pa.local`.  
+     In my case, I used Punycode to deceive users with `unıts.local` (which should be `units.local`). The first i is actually a character that does not belong to the Latin alphabet. The correct Punycode representation of the string is `xn--unts-2pa.local`.  
 
 ![units_true_VS_punycode](images/units_true_VS_punycode.png)
 
@@ -52,20 +52,14 @@ cat /etc/hosts
 10.0.2.7 xn--unts-mza.local essse3
 ...
 ```
+In both virtual machines, I mapped the addresses to:
 
 - `units.studenti.local`: to make the university email service functional.
 - `xn--unts-2pa.local`: to make the fake university email service work (the attacker’s service).
 - `essse3.local`: the fake Esse3 university portal domain.
 
-In entrambe le macchine virtuali, ho mappato gli indirizzi a:
-- `units.studenti.local`: per rendere funzionante il servizio di posta elettronica universitario.
-- `xn--unts-2pa.local`: per rendere funzionante il servizio di posta elettronica universitario fasullo (il servizio dell’attaccante).
-- `essse3.local`: il dominio fasullo del portale Esse3 universitario.
-
-
-
 ##  Email Server Configuration
-The two services I used for configuring the email servers are Postfix and Dovecot.
+The two services I used for configuring the mail servers are Postfix and Dovecot.
 
 **Postfix**: It is a Mail Transfer Agent (MTA) responsible for sending and receiving emails to and from other mail servers. It handles the routing and delivery of emails.
 
@@ -96,7 +90,7 @@ I have configured the services to be always active and start automatically durin
 ```bash
 sudo systemctl enable postfix && sudo systemctl enable dovecot
 ```
-I used Mozilla Thunderbird as the email client for users (students). I added all the users to a single machine to simplify my demonstration.
+I used Mozilla Thunderbird as email client for users (students). I added all the users to a single machine to simplify my demonstration (the same of the mail server).
 
 ## Virtual machine configuration
 ![demo_scheme](images/demo_scheme.jpg)
@@ -104,7 +98,7 @@ I used Mozilla Thunderbird as the email client for users (students). I added all
 I use 2 Ubuntu virtual machines on the same network with NAT (a network specifically for these 2 machines and this demo).
 
 - **Ubuntu 1**: 
-The email server is set up to simulate the university’s (domain: `studenti.units.local`).  
+The email server is set up to simulate the university’s domain `studenti.units.local`.  
 On the same machine, I use the Mozilla Thunderbird email client with several registered email accounts. These accounts belong to different students. Ideally, separate virtual machines would have been more accurate, but due to host resource limitations, I combined them.  
 The accounts can exchange emails with each other, just like regular email addresses.
 
@@ -117,12 +111,12 @@ This machine also hosts the Node.js program that the attacker uses to:
 
 ## Procedure
 
-Using the command `node app.js user@studenti.units.local`, I start the Node.js server and put the fake university website “online”.  
-I didn’t use Punycode for the website spoofing because I noticed that Chrome detects it and blocks the site. Instead, I chose another deception technique: I added an “s” to the name “esse,” hoping users wouldn’t notice.
+Using the command `node app.js user@studenti.units.local` I start the Node.js web-server and put the fake university website “online”.  
+I didn’t use Punycode for the website spoofing because I noticed that Chrome detects it and blocks the site. Instead, I chose another deception technique: I added an “s” to the name “esse,” hoping users don't notice.
 
 ![program_just_started](images/program_just_started.png)
 
-I’ve written a script that automates email sending: you simply provide the recipient’s email address as a parameter, and the program sends an email on behalf of the professor, containing the link to the malicious website.
+I wrote a script that automates email sending: you simply provide the recipient’s email address as a parameter, and the program sends an email on behalf of the professor, containing the link to the malicious website.
 
 ```bash
 #!/bin/bash
@@ -167,7 +161,7 @@ Cercate di compilarlo con una certa rapidità per favore, vi lascio il link:
 http://essse3:3100/login.html
 ```
 
-The attacker now waits for the victim to complete the questionnaire. When the questionnaire is filled out, the server receives the credentials and the names of two other students (those sitting to the right and left of the student). The program recreates their email addresses and automatically sends the phishing email to them. It can be said that the theoretical and optimistic spread speed is exponential.
+The attacker now waits that the victim completes the questionnaire. When the questionnaire is filled out, the server receives the credentials and the names of two other students (those sitting to the right and left of the student). The program recreates their email addresses and automatically sends the phishing email to them. It can be said that the theoretical and optimistic spread speed is exponential.
 
 ![mail_sent_to_schoolmates](images/mail_sent_to_schoolmates.png)  
 
@@ -209,17 +203,20 @@ The obtained email addresses to which the phishing email was sent can be found i
 ]
 ```
 
-For the email addresses, a simple list would have sufficed (I realize this). However, the JSON format could be useful if you wanted to include attributes or simply perform operations with other JSON data conveniently.
+For the email addresses, a simple list would have sufficed. However, the JSON format could be useful if you want to include attributes or simply perform operations with other JSON data conveniently.
 
 ## Conclusions and Potential Improvements
 
 The program is demonstrative and does not account for many aspects that should be improved to make the attack more effective. Here are some limitations:
 
+- THE MOST IMPORTANT: The passing of data (the credentials and questionnaire responses) between the client and the server starts via the nodeJs socket.io module. This solution is not secure (there is no encryption) and the communication can easily be intercepted.
+It is possible to implement TLS but it would be even better to use a tool that can transmit the data to the attacker without it being possible for a defender to locate the attacker.
 - I used the Italian language for the Esse3 website because I believe that the majority of students consult it in Italian. However, there is also an English version that I couldn’t activate in my project (Erasmus students might become suspicious).
 - The only information requested is the names of students who sat close during the exam. Students may forget or simply not know the identity of one or more colleagues.
 - A significant limitation is that the phishing expansion is limited to a single row of desks. It would be more effective to ask for additional information, such as the students with whom they have studied and those sitting in front and behind.
 
-I consider it highly likely that an attack of this kind could be discovered quickly if carried out during regular classes. This is because it’s probable that someone—either a student or a professor—would express suspicion. Alternatively, it might be more effective to conduct the attack at the end of classes, during the exam session (immediately after the exam).
+
+I consider it highly likely that an attack of this kind could be discovered quickly if carried out during regular classes. This is because it’s probable that someone—either a student or a professor—would express suspicion. Alternatively, it might be more effective to conduct the attack at the end of the course, during the exam session (immediately after the exam).
 
 In this case, the attacker’s goal is not money but sensitive data. The attacker should swiftly use the stolen credentials to access the Esse3 portal and obtain additional data about individual students: contact information, photos, tax details (including income), and bank data (IBAN).
 
