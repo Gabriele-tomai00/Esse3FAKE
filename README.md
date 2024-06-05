@@ -123,7 +123,7 @@ I wrote a script that automates email sending: you simply provide the recipient‚
 
 recipient=$1
 subject="Richiesta compilazione questionario"
-body="Buongiorno, a lezione mi sono dimenticato di chiedervi di compilare questo questionario rapidissimo in cui vi chiedo vicino a chi eravate seduti all'esame, purtroppo ho fatto un errore con la mappa cartacea.
+body="Buongiorno, a lezione mi sono dimenticato di chiedervi di compilare questo questionario rapidissimo in cui vi chiedo vicino a chi eravate seduti all'esame.
 Cercate di compilarlo con una certa rapidit√† per favore, vi lascio il link: 
 http://essse3:3100/login.html"
 
