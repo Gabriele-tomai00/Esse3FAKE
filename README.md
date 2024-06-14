@@ -16,7 +16,8 @@ Please note that this idea is personal, and I am familiar with some of the techn
 
 2. **NodeJS**: 
     I created a website clone of Esse3 using NodeJs and my previous knowledge of web programming (with some assistance from Chat GPT to speed up code writing). The goal was to create a site as similar as possible to the real one. The site consists of several HTML pages, CSS files, and JavaScript modified for my purposes.  
-    I used the Chrome extension “eXtract Snippet” to clone the portal, which allowed me to obtain all the HTML and CSS files.
+2. **eXtract Snippet**: 
+    I used the Chrome extension “eXtract Snippet” to clone the portal, which allowed me to obtain all the HTML and CSS files (https://chromewebstore.google.com/detail/extract-snippet/bfcjfegkgdoomgmofhcidoiampnpbdao)
 
 3. **JSON**: 
     Used for data collection and management (credentials and email addresses)
