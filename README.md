@@ -35,7 +35,7 @@ Please note that this idea is personal, and I am familiar with some of the techn
 
 7. **Punycode**: 
      I used the Punycode tool to create an email domain that closely resembles the real one but is actually different (it’s a domain that could theoretically be purchased and used on the internet). Punycode is an encoding system used to represent domain names containing non-ASCII characters. It allows the representation of international characters within the Domain Name System (DNS), which originally supports only ASCII characters (Latin letters without accents, numbers, and hyphens). Punycode converts a domain name containing Unicode characters (such as accented letters, Chinese characters, Arabic, etc.) into a string of ASCII characters. This is done so that the domain name can be managed by existing DNS servers.  
-     In my case, I used Punycode to deceive users with `unıts.local` (which should be `units.local`). The first i is actually a character that does not belong to the Latin alphabet. The correct Punycode representation of the string is `xn--unts-2pa.local`.  
+     In my case, I used Punycode to deceive users with `unıts.local` (which should be `units.local`). The first i is actually a character that does not belong to the Latin alphabet. The correct Punycode representation of the string is `xn--unts-mza.local`.  
 
 ![units_true_VS_punycode](images/units_true_VS_punycode.png)
 
@@ -56,7 +56,7 @@ cat /etc/hosts
 In both virtual machines, I mapped the addresses to:
 
 - `units.studenti.local`: to make the university email service functional.
-- `xn--unts-2pa.local`: to make the fake university email service work (the attacker’s service).
+- `xn--unts-mza.local`: to make the fake university email service work (the attacker’s service).
 - `essse3.local`: the fake Esse3 university portal domain.
 
 ##  Email Server Configuration
@@ -75,7 +75,7 @@ mydestination = $myhostname, studenti.units.local
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 10.0.2.0/24
 home_mailbox = Maildir/
 relay_domains = xn--unts-mza.local
-transport_maps = hash:/etc/postfix/transport # for the comunication with xn--unts-2pa.local
+transport_maps = hash:/etc/postfix/transport # for the comunication with xn--unts-mza.local
 ```
 
 Similarly, I also modified the configuration for xn--unts-mza.local (where relay_domains will be the same as studenti.units.local).
