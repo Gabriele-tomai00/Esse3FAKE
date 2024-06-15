@@ -26,7 +26,7 @@ Please note that this idea is personal, and I am familiar with some of the techn
     I developed a Bash program for automated email sending. The program takes the recipient’s email address as input, while the sender remains the same (the attacker).
 
 5. **Git**: 
-    I used Git with Github for writing the program and kept the repository private on my personal account (I had previously used Git with GitLab)
+    I used Git with Github for writing the program and kept the repository public on my personal account (I had previously used Git with GitLab)
 
 6. **Mail server (Postfix e Dovecot)**: 
     I used the Postfix and Dovecot packages to set up 2 email servers (one for each Linux virtual machine).  
