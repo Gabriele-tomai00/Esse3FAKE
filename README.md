@@ -1,5 +1,11 @@
 # Automatic Phishing Campaign Targeting UNITS Students 
 
+## ⚠️ Project Status Notice ⚠️
+
+This repository is **no longer actively maintained**.  
+Please be aware that some dependencies may be outdated or insecure.  
+
+It is strongly recommended to ensure that your npm environment is updated before using this project.
 
 ## Introduction
 
